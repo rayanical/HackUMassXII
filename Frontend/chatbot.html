@@ -27,6 +27,8 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
             overflow-y: auto;
             max-height: 400px;
+            display: flex;
+            flex-direction: column; /* Flex direction for messages */
         }
         .user-input {
             display: flex;
@@ -53,6 +55,19 @@
         }
         .message {
             margin: 10px 0;
+            max-width: 75%; /* Limit message width for better readability */
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .user {
+            background-color: #9e1b32; /* User message color */
+            color: white;
+            align-self: flex-end; /* Align to the right */
+        }
+        .bot {
+            background-color: #555; /* Bot message color */
+            color: white;
+            align-self: flex-start; /* Align to the left */
         }
     </style>
 </head>
@@ -73,10 +88,10 @@
         const urlParams = new URLSearchParams(window.location.search);
         const inches = urlParams.get('height');
         const weight = urlParams.get('weight');
-        const feet = Math.floor(inches/12);
+        const feet = Math.floor(inches / 12);
         const remainingInches = inches % 12;
+
         // Display initial message
-        
         const welcomeMessage = `Welcome! I see you are ${feet} feet ${remainingInches} inches tall and weigh ${weight} pounds. How can I assist you with your dietary choices?`;
         displayMessage(welcomeMessage, 'bot');
 
@@ -86,8 +101,8 @@
             if (userMessage.trim() !== "") {
                 displayMessage(userMessage, 'user');
                 document.getElementById('userMessage').value = '';
-
-                // Here you would handle the bot's response logic
+                
+                // Handle the bot's response
                 handleBotResponse(userMessage);
             }
         });
@@ -103,7 +118,6 @@
 
         // Simple bot response logic
         function handleBotResponse(userMessage) {
-            // For simplicity, we can just echo back the user's message
             const botResponse = `You said: "${userMessage}" (this is where the bot's logic would go).`;
             displayMessage(botResponse, 'bot');
         }
