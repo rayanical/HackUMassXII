@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chatbot - Dietary Choices</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Add your CSS file if needed -->
+    <link rel="stylesheet" href="style.css"> <!-- Add your CSS file if needed -->
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -117,10 +117,29 @@
         }
 
         // Simple bot response logic
-        function handleBotResponse(userMessage) {
-            const botResponse = `You said: "${userMessage}" (this is where the bot's logic would go).`;
-            displayMessage(botResponse, 'bot');
+        // Function to handle bot response
+async function handleBotResponse(userMessage) {
+    try {
+        const response = await fetch('/api/chat', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ message: userMessage }),
+        });
+
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
         }
+
+        const data = await response.json();
+        displayMessage(data.message, 'bot');
+    } catch (error) {
+        displayMessage("I'm sorry, I couldn't get a response at this time.", 'bot');
+        console.error('Error:', error);
+    }
+}
+
     </script>
 
 </body>
