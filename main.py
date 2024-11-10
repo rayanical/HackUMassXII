@@ -64,21 +64,20 @@ def update_mongo(dining_hall, meal_time, data):
         json_data = json.loads(cleaned_data)
         
         # Ensure json_data is a list of meals (for each meal type like breakfast, lunch, etc.)
-        if isinstance(json_data, dict):
+
             # Get the collection for the dining hall
-            collection = db[dining_hall]
+        collection = db[dining_hall]
 
-            # Update the document (add data under meal_time like breakfast, lunch, etc.)
-            update_query = { "name": dining_hall }
-            update_data = {
-                "$set": { f"meals.{meal_time}": json_data }
-            }
+        # Update the document (add data under meal_time like breakfast, lunch, etc.)
+        update_query = { "name": dining_hall }
+        update_data = {
+            "$set": { f"meals.{meal_time}": json_data }
+        }
 
-            # This will insert a new document if the dining hall doesn't exist
-            collection.update_one(update_query, update_data, upsert=True)
-            print(f"Updated {meal_time} for {dining_hall}.")
-        else:
-            print(f"Invalid data format for {dining_hall} and {meal_time}.")
+        # This will insert a new document if the dining hall doesn't exist
+        collection.update_one(update_query, update_data, upsert=True)
+        print(f"Updated {meal_time} for {dining_hall}.")
+
     except json.JSONDecodeError as e:
         print(f"Error parsing JSON data: {e}")
 

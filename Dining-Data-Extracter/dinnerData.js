@@ -13,7 +13,7 @@ const fs = require('fs');
 
     // Extract data
     const data = await page.evaluate(() => {
-        const allData = {};
+        let allData = {};
 
         /*
         // Extract data for breakfast if the breakfast div is present
@@ -76,12 +76,6 @@ const fs = require('fs');
                 const element = foodElement.querySelector('a');
                 const servingSize = element ? element.getAttribute('data-serving-size') : '';
                 const calories = element ? element.getAttribute('data-calories') : '';
-                const total_fat = element ? element.getAttribute('data-total-fat') : '';
-                const total_carbohydrates = element ? element.getAttribute('data-total-carb') : '';
-                const cholesterol = element ? element.getAttribute('data-cholesterol') : '';
-                const sodium = element ? element.getAttribute('data-sodium') : '';
-                const sugar = element ? element.getAttribute('data-sugars') : '';
-                const fiber = element ? element.getAttribute('data-dietary-fiber') : '';
                 const protein = element ? element.getAttribute('data-protein') : '';
                 const ingredients = element ? element.getAttribute('data-ingredient-list') : '';
                 const allergens = element ? element.getAttribute('data-allergens') : '';
@@ -91,12 +85,6 @@ const fs = require('fs');
                     name: foodElement.textContent.trim().replace(/(\$|)0\.00$/, ''),
                     serving_size: servingSize.trim(),
                     calories: calories.trim(),
-                    total_fat: total_fat.trim(),
-                    total_carbohydrates: total_carbohydrates.trim(),
-                    cholesterol: cholesterol.trim(),
-                    sodium: sodium.trim(),
-                    sugar: sugar.trim(),
-                    fiber: fiber.trim(),
                     protein: protein.trim(),
                     ingredients: ingredients.trim(),
                     allergens: allergens.trim(),
@@ -104,7 +92,7 @@ const fs = require('fs');
                 };
             });
 
-            allData.dinner = dinnerData;
+            allData = dinnerData;
         }
 
         /*

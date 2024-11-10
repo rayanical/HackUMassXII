@@ -72,11 +72,11 @@
         </style>
     </head>
     <body>
-        <h1>Dietary Choices Chatbot</h1>
+        <h1>UMealPal Chatbot</h1>
         <div class="chat-container" id="chatContainer"></div>
 
         <div class="user-input">
-            <input type="text" id="userMessage" placeholder="Ask me about your diet" />
+            <input type="text" id="userMessage" placeholder="Ask me anything about our menu!" />
             <button id="sendButton">Send</button>
         </div>
 
@@ -91,7 +91,7 @@
             const feet = Math.floor(inches / 12);
             const remainingInches = inches % 12;
 
-            const welcomeMessage = `Welcome! I see you are ${feet} feet ${remainingInches} inches tall and weigh ${weight} pounds. How can I assist you with your dietary choices?`;
+            const welcomeMessage = `Welcome! I see you are ${feet} feet ${remainingInches} inches tall and weigh ${weight} pounds. How can I help you take advantage of number one dining?`;
             displayMessage(welcomeMessage, 'bot');
 
             document.getElementById('sendButton').addEventListener('click', sendMessage);
@@ -129,7 +129,14 @@
                         headers: {
                             'Content-Type': 'application/json',
                         },
-                        body: JSON.stringify({ message: userMessage, calories: calories, diningHallName: diningHall }),
+                        body: JSON.stringify({
+                            message: userMessage,
+                            calories: calories,
+                            diningHallName: diningHall,
+                            height: urlParams.get('height'),
+                            weight: urlParams.get('weight'),
+                            restrictions: urlParams.get('allergies'),
+                        }),
                     });
 
                     if (!response.ok) {

@@ -9,7 +9,7 @@ dotenv.config(); // Load environment variables from .env file
 
 // Initialize the OpenAI API with your key
 const openai = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY,
+    apiKey: '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',
 });
 
 const client = new MongoClient(process.env.MONGODB_URI, {
@@ -40,6 +40,7 @@ async function run(diningName) {
             diningData = data;
             // console.log('Collection data as JSON:', jsonData);
             isDining = true;
+            return diningData[0].meals;
         } else {
             console.log('No data found in the collection.');
         }
@@ -56,15 +57,36 @@ app.use(cors());
 app.post('/api/chat', async (req, res) => {
     console.log('Received request:', req.body);
     const userMessage = req.body.message;
-
+    const height = req.body.height;
+    const weight = req.body.weight;
+    const calories = req.body.calories;
+    const restrictions = req.body.restrictions;
+    let messages;
     const diningHallName = req.body.diningHallName;
     if (!diningHallName) {
         return res.status(400).send('Dining hall name is required');
     }
-
+    let mealData;
+    let mealString;
     if (!isDining) {
         try {
-            run(diningHallName.toLowerCase()).catch(console.dir);
+            mealData = await run(diningHallName.toLowerCase()).catch(console.dir);
+            const currentHour = new Date().getHours();
+            if (currentHour >= 11 && currentHour < 16) {
+                mealData = mealData.breakfast;
+            } else if (currentHour >= 16 && currentHour < 21) {
+                mealData = mealData.dinner;
+            } else if (currentHour >= 21) {
+                mealData = mealData.latenight;
+            } else {
+                mealData = mealData.lunch;
+                console.log(mealData);
+            }
+            mealString = mealData
+                .map((mealObj) => {
+                    return `Meal: ${mealObj.name}\nServing Size: ${mealObj.serving_size}\nCalories: ${mealObj.calories}\nProtein: ${mealObj.protein}\nIngredients: ${mealObj.ingredients}\nDiet: ${mealObj.diet}\nAllergens: ${mealObj.allergens}`;
+                })
+                .join('\n\n');
         } catch (err) {
             console.error('Error retrieving data:', err);
         }
@@ -72,11 +94,14 @@ app.post('/api/chat', async (req, res) => {
         console.log('stored already');
     }
 
-    const diningMessages = diningData.map((item) => {
-        return { role: 'system', content: `Here are the available meals: ${JSON.stringify(item.meals, null, 2)}` };
-    });
-    const messages = [...diningMessages, { role: 'user', content: userMessage }];
     try {
+        messages = [
+            {
+                role: 'system',
+                content: `I'm ${height} inches tall, I weight ${weight} pounds, want to eat around ${calories}, and have these food restrictions: ${restrictions}.Here are the available meals: \n${mealString}`,
+            },
+            { role: 'user', content: userMessage },
+        ];
         const completion = await openai.chat.completions.create({
             model: 'gpt-3.5-turbo',
             messages: messages,
