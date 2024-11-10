@@ -9,7 +9,7 @@ dotenv.config(); // Load environment variables from .env file
 
 // Initialize the OpenAI API with your key
 const openai = new OpenAI({
-    apiKey: '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',
+    apiKey: process.env.OPENAI_API_KEY,
 });
 
 const client = new MongoClient(process.env.MONGODB_URI, {
@@ -73,14 +73,13 @@ app.post('/api/chat', async (req, res) => {
             mealData = await run(diningHallName.toLowerCase()).catch(console.dir);
             const currentHour = new Date().getHours();
             if (currentHour >= 11 && currentHour < 16) {
-                mealData = mealData.breakfast;
+                mealData = mealData.lunch;
             } else if (currentHour >= 16 && currentHour < 21) {
                 mealData = mealData.dinner;
             } else if (currentHour >= 21) {
                 mealData = mealData.latenight;
             } else {
-                mealData = mealData.lunch;
-                console.log(mealData);
+                mealData = mealData.breakfast;
             }
             mealString = mealData
                 .map((mealObj) => {
