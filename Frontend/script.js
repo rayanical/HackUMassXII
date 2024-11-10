@@ -7,7 +7,7 @@ function selectDiningHall(diningHallName) {
     const userInputForm = document.getElementById('userInputForm');
     userInputForm.style.display = 'block'; // Make the form visible
     userInputForm.style.opacity = '0'; // Start the form with 0 opacity (invisible)
-    
+
     // Animate the form fading in
     setTimeout(() => {
         userInputForm.style.transition = 'opacity 0.5s ease-in-out'; // Apply transition effect
