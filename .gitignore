@@ -1,1 +1,5 @@
-C:\Users\coold\Documents\GitHub\HackUMassXII\Frontend\.env
+# Ignore the .env file
+.env
+
+# Ignore .env files in any folder
+**/.env
