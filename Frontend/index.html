@@ -1,31 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UMass Dining Meal Planner</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>UMass Dining Meal Planner</title>
+        <link rel="stylesheet" href="style.css" />
+    </head>
+    <body>
+        <div class="main-content">
+            <h1>UMass Dining Meal Planner</h1>
 
-    <div class="main-content">
-        <h1>UMass Dining Meal Planner</h1>
-        
-        <!-- Dining Hall Selection -->
-        <div id="diningHallSelection" class="button-group">
-            <button class="dining-hall-btn" onclick="selectDiningHall('Hampshire')">Hampshire</button>
-            <button class="dining-hall-btn" onclick="selectDiningHall('Worcester')">Worcester</button>
-            <button class="dining-hall-btn" onclick="selectDiningHall('Berkshire')">Berkshire</button>
-            <button class="dining-hall-btn" onclick="selectDiningHall('Franklin')">Franklin</button>
+            <!-- Dining Hall Selection -->
+            <div id="diningHallSelection" class="button-group">
+                <button class="dining-hall-btn" onclick="selectDiningHall('Hampshire')">Hampshire</button>
+                <button class="dining-hall-btn" onclick="selectDiningHall('Worcester')">Worcester</button>
+                <button class="dining-hall-btn" onclick="selectDiningHall('Berkshire')">Berkshire</button>
+                <button class="dining-hall-btn" onclick="selectDiningHall('Franklin')">Franklin</button>
+            </div>
         </div>
-    </div>
 
-    <script>
-        function selectDiningHall(diningHallName) {
-            // Redirect to height-weight.html and pass the dining hall name as a query parameter
-            window.location.href = `height-weight.html?hall=${encodeURIComponent(diningHallName)}`;
-        }
-    </script>
-
-</body>
+        <script>
+            function selectDiningHall(diningHallName) {
+                // Redirect to height-weight.html and pass the dining hall name as a query parameter
+                window.location.href = `height-weight.html?hall=${encodeURIComponent(diningHallName)}`;
+            }
+        </script>
+    </body>
 </html>
