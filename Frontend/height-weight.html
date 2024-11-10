@@ -34,65 +34,99 @@
                 <div class="input-box">
                     <label for="calorieGoal">Calorie Goal:</label>
                     <select id="calorieGoal" name="calorieGoal" required>
-                        <option value="aggressive_cut">Aggressive Cut (20% below maintenance)</option>
-                        <option value="cut">Cut (10% below maintenance)</option>
+                        
+
                         <option value="maintenance">Maintenance</option>
+                        <option value="cut">Cut (10% below maintenance)</option>
+                        <option value="aggressive_cut">Aggressive Cut (20% below maintenance)</option>
                         <option value="bulk">Bulk (10% above maintenance)</option>
                         <option value="aggressive_bulk">Aggressive Bulk (20% above maintenance)</option>
                     </select>
                 </div>
-
+                <div class="allergy-restrictions">
+                    <h3>Allergies and Dietary Restrictions:</h3>
+                    <div class="button-group">
+                        <button type="button" class="allergy-btn" data-allergy="nuts">Nuts</button>
+                        <button type="button" class="allergy-btn" data-allergy="gluten">Gluten</button>
+                        <button type="button" class="allergy-btn" data-allergy="dairy">Dairy</button>
+                        <button type="button" class="allergy-btn" data-allergy="soy">Soy</button>
+                        <button type="button" class="allergy-btn" data-allergy="shellfish">Shellfish</button>
+                    </div>
+                </div>
                 <button type="submit" class="submit-btn">Submit</button>
             </form>
         </div>
     </div>
 
     <script>
-        // Get the dining hall from the URL query parameters
-        const urlParams = new URLSearchParams(window.location.search);
-        const diningHall = urlParams.get('hall'); // Get the 'hall' parameter from URL
-        
-        // Set the dining hall name in the h2 element
-        document.getElementById('diningHallName').textContent = `Dining Hall: ${diningHall}`;
+    
+    // Get the dining hall from the URL query parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    const diningHall = urlParams.get('hall'); // Get the 'hall' parameter from URL
+    
+    // Set the dining hall name in the h2 element
+    document.getElementById('diningHallName').textContent = `Dining Hall: ${diningHall}`;
 
-        // Handle form submission
-        document.getElementById('heightWeightForm').addEventListener('submit', function(event) {
-            event.preventDefault(); // Prevent the default form submission
+    // Initialize an array to store selected allergies
+    const selectedAllergies = [];
 
-            // Get height and weight values
-            const height = document.getElementById('height').value;
-            const weight = document.getElementById('weight').value;
-            const calorieGoal = document.getElementById('calorieGoal').value;
-
-            // Calculate maintenance calories
-            const maintenanceCalories = weight * 15;
-
-            // Calculate the calorie target based on the selection
-            let calorieTarget;
-            switch (calorieGoal) {
-                case 'aggressive_cut':
-                    calorieTarget = maintenanceCalories * 0.8; // 20% below maintenance
-                    break;
-                case 'cut':
-                    calorieTarget = maintenanceCalories * 0.9; // 10% below maintenance
-                    break;
-                case 'maintenance':
-                    calorieTarget = maintenanceCalories; // Maintenance
-                    break;
-                case 'bulk':
-                    calorieTarget = maintenanceCalories * 1.1; // 10% above maintenance
-                    break;
-                case 'aggressive_bulk':
-                    calorieTarget = maintenanceCalories * 1.2; // 20% above maintenance
-                    break;
-                default:
-                    calorieTarget = maintenanceCalories; // Default to maintenance
+    // Handle allergy button clicks
+    const allergyButtons = document.querySelectorAll('.allergy-btn');
+    allergyButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const allergy = button.getAttribute('data-allergy');
+            if (selectedAllergies.includes(allergy)) {
+                // Remove allergy if already selected
+                selectedAllergies.splice(selectedAllergies.indexOf(allergy), 1);
+                button.classList.remove('selected');
+            } else {
+                // Add allergy to selected list
+                selectedAllergies.push(allergy);
+                button.classList.add('selected');
             }
-
-            // Redirect to the chatbot page with height, weight, and calorie target as URL parameters
-            window.location.href = `chatbot.html?height=${height}&weight=${weight}&calories=${Math.round(calorieTarget)}`;
         });
-    </script>
+    });
+
+    // Handle form submission
+    document.getElementById('heightWeightForm').addEventListener('submit', function(event) {
+        event.preventDefault(); // Prevent the default form submission
+
+        // Get height and weight values
+        const height = document.getElementById('height').value;
+        const weight = document.getElementById('weight').value;
+        const calorieGoal = document.getElementById('calorieGoal').value;
+
+        // Calculate maintenance calories
+        const maintenanceCalories = weight * 15;
+
+        // Calculate the calorie target based on the selection
+        let calorieTarget;
+        switch (calorieGoal) {
+            case 'aggressive_cut':
+                calorieTarget = maintenanceCalories * 0.8; // 20% below maintenance
+                break;
+            case 'cut':
+                calorieTarget = maintenanceCalories * 0.9; // 10% below maintenance
+                break;
+            case 'maintenance':
+                calorieTarget = maintenanceCalories; // Maintenance
+                break;
+            case 'bulk':
+                calorieTarget = maintenanceCalories * 1.1; // 10% above maintenance
+                break;
+            case 'aggressive_bulk':
+                calorieTarget = maintenanceCalories * 1.2; // 20% above maintenance
+                break;
+            default:
+                calorieTarget = maintenanceCalories; // Default to maintenance
+        }
+
+        // Redirect to the chatbot page with height, weight, calorie target, and selected allergies as URL parameters
+        window.location.href = `chatbot.html?height=${height}&weight=${weight}&calories=${Math.round(calorieTarget)}&allergies=${selectedAllergies.join(',')}`;
+    });
+</script>
+
+    
 
 </body>
 </html>

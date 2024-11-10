@@ -125,3 +125,30 @@ h2 {
     outline: none;
     border: 2px solid #9e1b32; /* Highlight with UMass red on focus */
 }
+.allergy-restrictions {
+    margin-top: 20px;
+}
+
+.button-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px; /* Space between buttons */
+}
+
+.allergy-btn {
+    background-color: #555;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 15px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.allergy-btn:hover {
+    background-color: darkred;
+}
+
+.allergy-btn.selected {
+    background-color: #9e1b32; /* Change color when selected */
+}
