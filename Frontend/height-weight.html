@@ -96,7 +96,10 @@
         const height = document.getElementById('height').value;
         const weight = document.getElementById('weight').value;
         const calorieGoal = document.getElementById('calorieGoal').value;
-
+        if (height <= 0 || weight <= 0) {
+        alert("Please enter positive values for both height and weight.");
+        return; // Exit the function if validation fails
+    }
         // Calculate maintenance calories
         const maintenanceCalories = weight * 15;
 
