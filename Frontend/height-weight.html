@@ -30,6 +30,18 @@
                     <input type="number" id="weight" name="weight" required>
                 </div>
 
+                <!-- Calorie Goal Selection -->
+                <div class="input-box">
+                    <label for="calorieGoal">Calorie Goal:</label>
+                    <select id="calorieGoal" name="calorieGoal" required>
+                        <option value="aggressive_cut">Aggressive Cut (20% below maintenance)</option>
+                        <option value="cut">Cut (10% below maintenance)</option>
+                        <option value="maintenance">Maintenance</option>
+                        <option value="bulk">Bulk (10% above maintenance)</option>
+                        <option value="aggressive_bulk">Aggressive Bulk (20% above maintenance)</option>
+                    </select>
+                </div>
+
                 <button type="submit" class="submit-btn">Submit</button>
             </form>
         </div>
@@ -50,9 +62,35 @@
             // Get height and weight values
             const height = document.getElementById('height').value;
             const weight = document.getElementById('weight').value;
+            const calorieGoal = document.getElementById('calorieGoal').value;
 
-            // Redirect to the chatbot page with height and weight as URL parameters
-            window.location.href = `chatbot.html?height=${height}&weight=${weight}`;
+            // Calculate maintenance calories
+            const maintenanceCalories = weight * 15;
+
+            // Calculate the calorie target based on the selection
+            let calorieTarget;
+            switch (calorieGoal) {
+                case 'aggressive_cut':
+                    calorieTarget = maintenanceCalories * 0.8; // 20% below maintenance
+                    break;
+                case 'cut':
+                    calorieTarget = maintenanceCalories * 0.9; // 10% below maintenance
+                    break;
+                case 'maintenance':
+                    calorieTarget = maintenanceCalories; // Maintenance
+                    break;
+                case 'bulk':
+                    calorieTarget = maintenanceCalories * 1.1; // 10% above maintenance
+                    break;
+                case 'aggressive_bulk':
+                    calorieTarget = maintenanceCalories * 1.2; // 20% above maintenance
+                    break;
+                default:
+                    calorieTarget = maintenanceCalories; // Default to maintenance
+            }
+
+            // Redirect to the chatbot page with height, weight, and calorie target as URL parameters
+            window.location.href = `chatbot.html?height=${height}&weight=${weight}&calories=${Math.round(calorieTarget)}`;
         });
     </script>
 

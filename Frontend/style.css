@@ -109,3 +109,19 @@ h2 {
     font-size: 20px;
     color: #ccc; /* Lighter gray for the dining hall label */
 }
+.input-box input,
+.input-box select { /* Add styles for both input and select elements */
+    width: 100%;
+    padding: 5px;
+    background-color: #222; /* Darker background for input and select */
+    color: white;
+    border: none;
+    margin-top: 5px;
+    border-radius: 5px;
+}
+
+.input-box input:focus,
+.input-box select:focus { /* Highlight on focus */
+    outline: none;
+    border: 2px solid #9e1b32; /* Highlight with UMass red on focus */
+}
